@@ -1,0 +1,25 @@
+{
+  "name": "sass-tools",
+  "version": "0.1.0",
+  "description": "A lightweight collection of hand-written Sass modules that I happen to use quite often.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vasartam/sass-tools.git"
+  },
+  "keywords": [
+    "sass",
+    "tools",
+    "mixins",
+    "functions"
+  ],
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/vasartam/sass-tools/issues"
+  },
+  "homepage": "https://github.com/vasartam/sass-tools#readme"
+}
