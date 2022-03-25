@@ -23,10 +23,10 @@
 	$outside-minimum: keep-value;
 
 	@if length($outside-screen-widths) < 1 {
-		@warn "No values are specified for the $outside-screen-widths list. Keeping default.";
+		@warn 'No values are specified for the $outside-screen-widths list. Keeping default.';
 	} @else {
 		@if length($outside-screen-widths) > 2 {
-			@warn "No need to specifiy more than 2 values for the $outside-screen-widths list.";
+			@warn 'No need to specifiy more than 2 values for the $outside-screen-widths list.';
 		}
 		$outside-maximum: nth($outside-screen-widths, 1);
 		$outside-minimum: if(length($outside-screen-widths) >= 2, nth($outside-screen-widths, 2), $outside-maximum);
@@ -46,16 +46,20 @@
 		$media-max-width: nth($screen-widths-list, $i);
 		$media-min-width: if(length($screen-widths-list) >= $i + 1, nth($screen-widths-list, $i + 1), 0);
 		$media: "";
-		@if $i == 1 and $outside-maximum == keep-interpolation {
-			$media: $media + "(min-width: #{$media-min-width})";
-		} @else if $i == $iterations and $outside-minimum == keep-interpolation {
+
+		@if $i != 1 or $outside-maximum != keep-interpolation {
+			$media: $media + "(max-width: #{$media-max-width})";
+		}
+		@if $i != $iterations or $outside-minimum != keep-interpolation {
 			@if $media != "" {
 				$media: $media + " and ";
 			}
-			$media: $media + "(max-width: #{$media-max-width})";
-		} @else {
-			$media: "(max-width: #{$media-max-width}) and (min-width: #{$media-min-width})";
+			$media: $media + "(min-width: #{$media-min-width})";
 		}
+		@if $media == "" {
+			$media: "all";
+		}
+
 		@media #{$media} {
 			@each $property-name, $property-map in $properties-map {
 				@if length($property-map) == 1 {
