@@ -1,9 +1,11 @@
+@use "functions/str-replace" as s;
+
 /// https://gist.github.com/jonathantneal/d0460e5c2d5d7f9bc5e6
 @mixin font-face($family, $path, $weight: normal, $style: normal, $exts: eot woff2 woff ttf svg/*, $variations: woff2 ttf*/, $svg: none) {
 	$src: null;
 
 	@if $svg == none {
-		$svg: str-replace($family, " ", "_");
+		$svg: s.str-replace($family, " ", "_");
 	}
 
 	$extmods: (
