@@ -1,0 +1,30 @@
+@mixin flex-container($margin: none, $center: false, $child-equal: false, $flex-basis: none) {
+	@if $margin != none {
+		$negative-margin: ();
+		@each $value in $margin {
+			$negative-margin: append($negative-margin, -$value);
+		}
+		margin: $negative-margin;
+	}
+
+	display: flex;
+	@if $center {
+		justify-content: center;
+		align-items: center;
+	}
+
+	@if $margin != none or $child-equal {
+		> * {
+			@if $margin != none {
+				margin: $margin;
+			}
+			@if $child-equal {
+				@if $flex-basis != none {
+					flex: 1 0 $flex-basis;
+				} @else {
+					flex: 1 0;
+				}
+			}
+		}
+	}
+}

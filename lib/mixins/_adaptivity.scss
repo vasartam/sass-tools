@@ -1,0 +1,171 @@
+/// linear-interpolation
+/// Calculate the definition of a line between two points
+/// @param $map - A SASS map of viewport widths and size value pairs
+/// @returns A linear equation as a calc() function
+/// @example
+///   font-size: linear-interpolation((320px: 18px, 768px: 26px));
+/// @author Jake Wilson <jake.e.wilson@gmail.com>
+///
+/// https://gist.github.com/Jakobud/7414f91142e0f540f221a3e3cafdf856
+///
+/// Modified by Vasiliy Artamonov 06.09.2020
+@function linear-interpolation($map) {
+	$keys: map-keys($map);
+	@if (length($keys) != 2) {
+		@error "linear-interpolation() $map must be exactly 2 values";
+	}
+
+	$value_1: map-get($map, nth($keys, 1));
+	$value_2: map-get($map, nth($keys, 2));
+	$result: ();
+
+	@if type_of($value_1) == "list" and type_of($value_2) == "list" {
+		$leave_alone_properties: ();
+		$leave_alone_indices: ();
+
+		@for $i from 1 through length($value_1) {
+			$list_1_item: nth($value_1, $i);
+			$list_2_item: nth($value_2, $i);
+
+			@if $list_1_item == $list_2_item {
+				$leave_alone_properties: append($leave_alone_properties, $list_1_item);
+				$leave_alone_indices: append($leave_alone_indices, $i);
+			}
+		}
+
+		//@debug $leave_alone_properties;
+		//@debug $leave_alone_indices;
+		//@debug $leave_alone_properties, 1;
+		//@error '';
+		$j: 1;
+
+		@for $i from 1 through length($value_1) {
+			@if index($leave_alone_indices, $i) != null and $leave_alone_indices != $i {
+				//@debug 'Skipping index: ', $i;
+				$result: append($result, #{nth($leave_alone_properties, $j)});
+				$j: $j + 1;
+			} @else {
+				$list_1_item: nth($value_1, $i);
+				$list_2_item: nth($value_2, $i);
+
+				// The slope
+				$m: ($list_2_item - $list_1_item)/(nth($keys, 2) - nth($keys, 1));
+
+				// The y-intercept
+				$b: $list_1_item - $m * nth($keys, 1);
+
+				// Determine if the sign should be positive or negative
+				$sign: "+";
+				@if ($b < 0) {
+					$sign: "-";
+					$b: abs($b);
+				}
+
+				$calc: #{$m*100}vw #{$sign} #{$b};
+				$result: append($result, calc(#{$calc}));
+			}
+		}
+	} @else {
+		// The slope
+		$m: ($value_2 - $value_1)/(nth($keys, 2) - nth($keys,1));
+
+		// The y-intercept
+		$b: $value_1 - $m * nth($keys, 1);
+
+		// Determine if the sign should be positive or negative
+		$sign: "+";
+		@if ($b < 0) {
+			$sign: "-";
+			$b: abs($b);
+		}
+
+		$calc: #{$m*100}vw #{$sign} #{$b};
+		$result: calc(#{$calc});
+	}
+
+	@return $result;
+}
+
+/// adaptivity
+/// Builds a set of media queries, where for each of the screen width points a set of properties is applied.
+/// Any value in between these points is achieved by using linear interpolation.
+/// For the screen widths bigger than specified, the first value in properties' list is applied by default.
+/// For the screen widths smaller than specified, the last value in properties' list is applied by default.
+/// This behaviour can be modified by explicitly defining the third argument.
+/// @param $screen-widths-list - A list of screen width points
+/// @param $properties-map - A map of properties' names and lists of values to achieve at certain screen width points
+/// @param $outside-screen-widths - A list of values defining what rules will be applied outside of the specified
+///   screen width points. First value defines what will happen above maximum, the second one - below minimum.
+///   If only the first value is specified, then the second value will be equal to the first
+///   Possible values: none, keep-value (default), keep-interpolation
+/// @returns A set of properties and media queries to achieve certain values in certain screen widths.
+/// @example
+///   @include linear-interpolation(1440px 834px, (
+///       "font-size": $font-size-medium 19px,
+///       "line-height": 51px 34px
+///   ));
+@mixin adaptivity($screen-widths-list, $properties-map, $outside-screen-widths: keep-value) {
+	$outside-maximum: keep-value;
+	$outside-minimum: keep-value;
+
+	@if length($outside-screen-widths) < 1 {
+		@warn "No values are specified for the $outside-screen-widths list. Keeping default.";
+	} @else {
+		@if length($outside-screen-widths) > 2 {
+			@warn "No need to specifiy more than 2 values for the $outside-screen-widths list.";
+		}
+		$outside-maximum: nth($outside-screen-widths, 1);
+		$outside-minimum: if(length($outside-screen-widths) >= 2, nth($outside-screen-widths, 2), $outside-maximum);
+	}
+
+	@if $outside-maximum == keep-value {
+		$media-min-width: nth($screen-widths-list, 1) + 1;
+		@media (min-width: $media-min-width) {
+			@each $property-name, $property-map in $properties-map {
+				#{$property-name}: nth($property-map, 1);
+			}
+		}
+	}
+
+	$iterations: length($screen-widths-list) - 1;
+	@for $i from 1 through $iterations {
+		$media-max-width: nth($screen-widths-list, $i);
+		$media-min-width: if(length($screen-widths-list) >= $i + 1, nth($screen-widths-list, $i + 1), 0);
+		$media: "";
+		@if $i == 1 and $outside-maximum == keep-interpolation {
+			$media: $media + "(min-width: #{$media-min-width})";
+		} @else if $i == $iterations and $outside-minimum == keep-interpolation {
+			@if $media != "" {
+				$media: $media + " and ";
+			}
+			$media: $media + "(max-width: #{$media-max-width})";
+		} @else {
+			$media: "(max-width: #{$media-max-width}) and (min-width: #{$media-min-width})";
+		}
+		@media #{$media} {
+			@each $property-name, $property-map in $properties-map {
+				@if length($property-map) == 1 {
+					#{$property-name}: nth($property-map, 1);
+				} @else {
+					$index_1: min(length($property-map), $i);
+					$index_2: min(length($property-map), $i + 1);
+					#{$property-name}: linear-interpolation(($media-max-width: nth($property-map, $index_1), $media-min-width: nth($property-map, $index_2)));
+				}
+			}
+		}
+	}
+
+	@if $outside-minimum == keep-value {
+		$media-max-width: nth($screen-widths-list, length($screen-widths-list)) - 1;
+		@media (max-width: $media-max-width) {
+			@each $property-name, $property-map in $properties-map {
+				@if length($property-map) == 1 {
+					#{$property-name}: nth($property-map, 1);
+				} @else {
+					$index: min(length($property-map), length($screen-widths-list));
+					#{$property-name}: nth($property-map, $index);
+				}
+			}
+		}
+	}
+}

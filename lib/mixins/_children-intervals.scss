@@ -1,0 +1,23 @@
+@mixin children-intervals($interval-size, $horizontal: false, $reverse: false) {
+	@if not $horizontal {
+		@if not $reverse {
+			> :not(:first-child) {
+				margin-top: $interval-size;
+			}
+		} @else {
+			> :not(:last-child) {
+				margin-bottom: $interval-size;
+			}
+		}
+	} @else {
+		@if not $reverse {
+			> :not(:first-child) {
+				margin-left: $interval-size;
+			}
+		} @else {
+			> :not(:last-child) {
+				margin-right: $interval-size;
+			}
+		}
+	}
+}
