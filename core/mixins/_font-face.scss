@@ -1,3 +1,6 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
 @use "functions/str-replace" as s;
 
 /// https://gist.github.com/jonathantneal/d0460e5c2d5d7f9bc5e6
@@ -26,13 +29,14 @@
 	//}
 
 	@each $ext in $exts {
-		$extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
-		$format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
-		$src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+		$extmod: if(map.has-key($extmods, $ext), $ext + map.get($extmods, $ext), $ext);
+		$format: if(map.has-key($formats, $ext), map.get($formats, $ext), $ext);
+		$url: string.quote($path + "." + $extmod);
+		$src: list.append($src, url($url) format(string.quote($format)), comma);
 	}
 
 	@font-face {
-		font-family: quote($family);
+		font-family: string.quote($family);
 		@if index($exts, eot) != null {
 			src: url("#{$path}.eot");
 		}
