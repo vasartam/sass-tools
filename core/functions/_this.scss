@@ -1,0 +1,4 @@
+/// Returns the last selector
+@function this() {
+	@return nth(nth(&, 1), length(nth(&, 1)));
+}
