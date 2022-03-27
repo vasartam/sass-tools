@@ -1,7 +1,7 @@
 @use "sass:list";
 @use "sass:map";
 @use "sass:string";
-@use "functions/str-replace" as s;
+@use "../functions/str-replace" as s;
 
 /// https://gist.github.com/jonathantneal/d0460e5c2d5d7f9bc5e6
 @mixin font-face($family, $path, $weight: normal, $style: normal, $exts: eot woff2 woff ttf svg/*, $variations: woff2 ttf*/, $svg: none) {

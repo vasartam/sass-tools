@@ -1,4 +1,4 @@
-@use "functions/linear-interpolation" as l;
+@use "../functions/linear-interpolation" as l;
 
 /// adaptivity
 /// Builds a set of media queries, where for each of the screen width points a set of properties is applied.
