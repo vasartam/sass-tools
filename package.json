@@ -1,5 +1,5 @@
 {
-  "name": "sass-tools",
+  "name": "@vasartam/sass-tools",
   "version": "0.1.0",
   "description": "A lightweight collection of hand-written Sass modules that I happen to use quite often.",
   "main": "index.js",
