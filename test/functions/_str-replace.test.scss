@@ -1,0 +1,32 @@
+@use "../../node_modules/sass-true/sass/true";
+@use "../../core/functions/str-replace" as *;
+
+@include true.describe('[function] str-replace') {
+	@include true.it('Replaces characters at the start of the string') {
+		@include true.assert-equal(
+			str-replace("Hello world!", "Hello", "olleH"),
+			"olleH world!",
+		)
+	}
+
+	@include true.it('Replaces characters at the end of the string') {
+		@include true.assert-equal(
+				str-replace("Hello world!", "world!", "you!"),
+				"Hello you!",
+		)
+	}
+
+	@include true.it('Returns the unmodified string if the needle is not found') {
+		@include true.assert-equal(
+				str-replace("Hello world!", "peace", ""),
+				"Hello world!",
+		)
+	}
+
+	@include true.it('Replaces multiple occurences of substring') {
+		@include true.assert-equal(
+				str-replace("Hello world!", "o", "au"),
+				"Hellau waurld!",
+		)
+	}
+}
