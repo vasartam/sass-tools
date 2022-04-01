@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/vasartam/sass-tools/issues"
   },
-  "homepage": "https://github.com/vasartam/sass-tools#readme"
+  "homepage": "https://github.com/vasartam/sass-tools#readme",
+  "devDependencies": {
+    "sass-true": "^6.1.0"
+  }
 }
