@@ -4,8 +4,8 @@
 @include true.describe('[function] str-replace') {
 	@include true.it('Replaces characters at the start of the string') {
 		@include true.assert-equal(
-			str-replace("Hello world!", "Hello", "olleH"),
-			"olleH world!",
+			str-replace("Hello world!", "Hello", "Bye"),
+			"Bye world!",
 		)
 	}
 
