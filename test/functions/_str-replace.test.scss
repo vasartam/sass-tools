@@ -29,4 +29,33 @@
 				"Hellau waurld!",
 		)
 	}
+
+	@include true.it('Can work with strings without curly braces') {
+		@include true.assert-equal(
+				str-replace(Hello\ world\!, o, au),
+				Hellau\ waurld\!,
+		)
+	}
+
+	@include true.it('Assumes the argument `$replace` can be omitted') {
+		@include true.assert-equal(
+				str-replace("Hello world", "l"),
+				"Heo word",
+		)
+	}
+
+	@include true.it('Can replace up to 100 entries') {
+		$string: "abc";
+
+		@for $i from 0 to 100 {
+			$string: $string + "DUMMY";
+		}
+
+		$string: $string + "abc";
+
+		@include true.assert-equal(
+				str-replace($string, "DUMMY"),
+				"abcabc",
+		)
+	}
 }
