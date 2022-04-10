@@ -1,10 +1,10 @@
 {
-  "name": "sass-tools",
-  "version": "0.1.0",
+  "name": "@vasart/sass-tools",
+  "version": "0.2.0",
   "description": "A lightweight collection of hand-written Sass modules that I happen to use quite often.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,11 @@
   "bugs": {
     "url": "https://github.com/vasartam/sass-tools/issues"
   },
-  "homepage": "https://github.com/vasartam/sass-tools#readme"
+  "homepage": "https://github.com/vasartam/sass-tools#readme",
+  "devDependencies": {
+    "glob": "^7.2.0",
+    "jest": "^27.5.1",
+    "sass": "^1.49.10",
+    "sass-true": "^6.1.0"
+  }
 }

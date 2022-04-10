@@ -1,0 +1,61 @@
+@use "../../node_modules/sass-true/sass/true";
+@use "../../core/functions/str-replace" as *;
+
+@include true.describe('[function] str-replace') {
+	@include true.it('Replaces characters at the start of the string') {
+		@include true.assert-equal(
+			str-replace("Hello world!", "Hello", "Bye"),
+			"Bye world!",
+		)
+	}
+
+	@include true.it('Replaces characters at the end of the string') {
+		@include true.assert-equal(
+				str-replace("Hello world!", "world!", "you!"),
+				"Hello you!",
+		)
+	}
+
+	@include true.it('Returns the unmodified string if the needle is not found') {
+		@include true.assert-equal(
+				str-replace("Hello world!", "peace", ""),
+				"Hello world!",
+		)
+	}
+
+	@include true.it('Replaces multiple occurences of substring') {
+		@include true.assert-equal(
+				str-replace("Hello world!", "o", "au"),
+				"Hellau waurld!",
+		)
+	}
+
+	@include true.it('Can work with strings without curly braces') {
+		@include true.assert-equal(
+				str-replace(Hello\ world\!, o, au),
+				Hellau\ waurld\!,
+		)
+	}
+
+	@include true.it('Assumes the argument `$replace` can be omitted') {
+		@include true.assert-equal(
+				str-replace("Hello world", "l"),
+				"Heo word",
+		)
+	}
+
+	@include true.it('Can replace up to 100 entries') {
+		$string: "abc";
+
+		@for $i from 0 to 100 {
+			$string: $string + "DUMMY";
+		}
+
+		$string: $string + "abc";
+
+		@include true.assert-equal(
+				str-replace($string, "DUMMY"),
+				"abcabc",
+		)
+	}
+}
