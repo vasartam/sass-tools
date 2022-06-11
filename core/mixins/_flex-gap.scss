@@ -1,0 +1,17 @@
+@mixin flex-gap($gap: none) {
+	@if $gap != none {
+		$negative-margin: ();
+		@each $value in $gap {
+			$negative-margin: append($negative-margin, -$value);
+		}
+		margin: $negative-margin;
+	}
+
+	display: flex;
+
+	@if $gap != none {
+		> * {
+			margin: $gap;
+		}
+	}
+}
