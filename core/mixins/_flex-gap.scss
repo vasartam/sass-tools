@@ -1,18 +1,36 @@
 @use "sass:math";
+@use "sass:list";
 
 @mixin flex-gap($gap) {
-	$gap-negative: ();
-	@each $value in $gap {
-		$gap-negative: append($gap-negative, -$value);
+	@if (length($gap) == 0) {
+		@error "`$gap` should be a list of 1 or 2 values. An empty value was given: #{$gap}";
 	}
-	margin-right: $gap-negative;
-	margin-bottom: $gap-negative;
+
+	$gap-y: nth($gap, 1);
+	$gap-x: $gap-y;
+
+	@if (length($gap) == 2) {
+		$gap-x: nth($gap, 2);
+	}
+
+	margin-right: $gap-x * -1;
+	margin-bottom: $gap-y * -1;
 
 	> * {
-		margin-right: $gap;
-		margin-bottom: $gap;
+		margin-right: $gap-x;
+		margin-bottom: $gap-y;
 	}
 }
+
+//@function negate-list($list) {
+//	$list-negated: ();
+//
+//	@each $value in $list {
+//		$list-negated: append($list-negated, -1 * $value);
+//	}
+//
+//	@return $list-negated;
+//}
 
 @mixin flex-gap-margin-all($gap) {
 	$gap-halved: ();
