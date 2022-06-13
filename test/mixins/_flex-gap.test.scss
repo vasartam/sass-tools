@@ -35,4 +35,21 @@
 			}
 		}
 	}
+
+	@include true.it('Can accept multi-directional values') {
+		@include true.assert {
+			@include true.output {
+				@include flex-gap(10px 20px);
+			}
+			@include true.expect {
+				margin-right: -20px;
+				margin-bottom: -10px;
+
+				> * {
+					margin-right: 20px;
+					margin-bottom: 10px;
+				}
+			}
+		}
+	}
 }
