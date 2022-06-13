@@ -22,16 +22,8 @@
 	}
 }
 
-//@function negate-list($list) {
-//	$list-negated: ();
-//
-//	@each $value in $list {
-//		$list-negated: append($list-negated, -1 * $value);
-//	}
-//
-//	@return $list-negated;
-//}
-
+// For testing purposes only.
+// Maybe this functionality will be included in the future in some other form.
 @mixin flex-gap-margin-all($gap) {
 	$gap-halved: ();
 	@each $value in $gap {
@@ -50,16 +42,25 @@
 	}
 }
 
+// For testing purposes only.
+// Maybe this functionality will be included in the future in some other form.
 @mixin flex-gap-margin-top-left($gap) {
-	$gap-negative: ();
-	@each $value in $gap {
-		$gap-negative: append($gap-negative, -$value);
+	@if (length($gap) == 0) {
+		@error "`$gap` should be a list of 1 or 2 values. An empty value was given: #{$gap}";
 	}
-	margin-top: $gap-negative;
-	margin-left: $gap-negative;
+
+	$gap-y: nth($gap, 1);
+	$gap-x: $gap-y;
+
+	@if (length($gap) == 2) {
+		$gap-x: nth($gap, 2);
+	}
+
+	margin-top: $gap-y * -1;
+	margin-left: $gap-x * -1;
 
 	> * {
-		margin-top: $gap;
-		margin-left: $gap;
+		margin-top: $gap-y;
+		margin-left: $gap-x;
 	}
 }
