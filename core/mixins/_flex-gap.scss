@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @mixin flex-gap($gap) {
 	$gap-negative: ();
 	@each $value in $gap {
@@ -9,5 +11,37 @@
 	> * {
 		margin-right: $gap;
 		margin-bottom: $gap;
+	}
+}
+
+@mixin flex-gap-margin-all($gap) {
+	$gap-halved: ();
+	@each $value in $gap {
+		$gap-halved: append($gap-halved, math.div($value, 2));
+	}
+	$gap: $gap-halved;
+
+	$gap-negative: ();
+	@each $value in $gap {
+		$gap-negative: append($gap-negative, -$value);
+	}
+	margin: $gap-negative;
+
+	> * {
+		margin: $gap;
+	}
+}
+
+@mixin flex-gap-margin-top-left($gap) {
+	$gap-negative: ();
+	@each $value in $gap {
+		$gap-negative: append($gap-negative, -$value);
+	}
+	margin-top: $gap-negative;
+	margin-left: $gap-negative;
+
+	> * {
+		margin-top: $gap;
+		margin-left: $gap;
 	}
 }
