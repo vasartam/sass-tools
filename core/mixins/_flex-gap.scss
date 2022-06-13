@@ -2,15 +2,15 @@
 @use "sass:list";
 
 @mixin flex-gap($gap) {
-	@if (length($gap) == 0) {
+	@if (list.length($gap) == 0) {
 		@error "`$gap` should be a list of 1 or 2 values. An empty value was given: #{$gap}";
 	}
 
-	$gap-y: nth($gap, 1);
+	$gap-y: list.nth($gap, 1);
 	$gap-x: $gap-y;
 
-	@if (length($gap) == 2) {
-		$gap-x: nth($gap, 2);
+	@if (list.length($gap) == 2) {
+		$gap-x: list.nth($gap, 2);
 	}
 
 	margin-right: $gap-x * -1;
@@ -45,15 +45,15 @@
 // For testing purposes only.
 // Maybe this functionality will be included in the future in some other form.
 @mixin flex-gap-margin-top-left($gap) {
-	@if (length($gap) == 0) {
+	@if (list.length($gap) == 0) {
 		@error "`$gap` should be a list of 1 or 2 values. An empty value was given: #{$gap}";
 	}
 
-	$gap-y: nth($gap, 1);
+	$gap-y: list.nth($gap, 1);
 	$gap-x: $gap-y;
 
-	@if (length($gap) == 2) {
-		$gap-x: nth($gap, 2);
+	@if (list.length($gap) == 2) {
+		$gap-x: list.nth($gap, 2);
 	}
 
 	margin-top: $gap-y * -1;
