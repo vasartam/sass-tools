@@ -1,3 +1,4 @@
+/// @deprecated
 @mixin flex-container($margin: none, $center: false, $child-equal: false, $flex-basis: none) {
 	@if $margin != none {
 		$negative-margin: ();
