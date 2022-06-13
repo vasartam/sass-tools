@@ -3,9 +3,11 @@
 	@each $value in $gap {
 		$gap-negative: append($gap-negative, -$value);
 	}
-	margin: $gap-negative;
+	margin-right: $gap-negative;
+	margin-bottom: $gap-negative;
 
 	> * {
-		margin: $gap;
+		margin-right: $gap;
+		margin-bottom: $gap;
 	}
 }
