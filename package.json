@@ -27,5 +27,8 @@
     "jest": "^27.5.1",
     "sass": "^1.49.10",
     "sass-true": "^6.1.0"
+  },
+  "dependencies": {
+    "sass-flex-gap": "^0.1.0"
   }
 }
